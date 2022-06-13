@@ -1,0 +1,32 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Tag {
+  id           Int        @id @default(autoincrement())
+  name         String
+  createTime   DateTime   @default(now())
+  modifiedTime DateTime   @default(now()) @updatedAt
+  Tag_Note     Tag_Note[]
+}
+
+model Note {
+  id           Int        @id @default(autoincrement())
+  content      String
+  createTime   DateTime   @default(now())
+  modifiedTime DateTime   @default(now()) @updatedAt
+  Tag_Note     Tag_Note[]
+}
+
+model Tag_Note {
+  id     Int  @id @default(autoincrement())
+  tagId  Int
+  tag    Tag  @relation(fields: [tagId], references: [id])
+  noteId Int
+  note   Note @relation(fields: [noteId], references: [id])
+}
